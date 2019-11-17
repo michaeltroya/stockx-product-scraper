@@ -5,6 +5,7 @@ import scraper from './util/scraper';
 
 function App() {
   const [products, setProducts] = useState('');
+  const [csvData, setCsvData] = useState([]);
 
   const handleChange = e => {
     setProducts(e.target.value);
@@ -18,7 +19,8 @@ function App() {
   };
 
   const handleSubmit = e => {
-    scraper(getObjString(products));
+    console.log(scraper(getObjString(products)));
+    setCsvData(scraper(getObjString(products)));
     e.preventDefault();
   };
 
@@ -30,6 +32,7 @@ function App() {
         </label>
         <input type="submit" value="Submit" />
       </form>
+      <CSVLink data={csvData}>Download me</CSVLink>
     </div>
   );
 }
