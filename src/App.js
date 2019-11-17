@@ -1,24 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { CSVLink } from 'react-csv';
+
+import scraper from './util/scraper';
 
 function App() {
+  const [products, setProducts] = useState('');
+
+  const handleChange = e => {
+    setProducts(e.target.value);
+  };
+
+  const getObjString = input => {
+    let string = `{
+      "products":[${input}]
+  }`;
+    return string;
+  };
+
+  const handleSubmit = e => {
+    scraper(getObjString(products));
+    e.preventDefault();
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <label>
+          <textarea type="text" value={products} onChange={handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
     </div>
   );
 }
