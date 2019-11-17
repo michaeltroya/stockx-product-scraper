@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { CSVLink } from 'react-csv';
 
+import { CSVLink } from 'react-csv';
+//Bootstrap imports
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import scraper from './util/scraper';
 
 function App() {
@@ -29,29 +33,39 @@ function App() {
   };
 
   const handleSubmit = e => {
-    setCsvData(scraper(getObjString(products), type));
+    if (products === '') {
+      alert('Form can not be empty');
+    } else {
+      setCsvData(scraper(getObjString(products), type));
+    }
+
     e.preventDefault();
   };
 
   return (
-    <div>
+    <Container>
       <form onSubmit={handleSubmit}>
-        <label>
-          <select onChange={handleTypeChange} value={type}>
-            <option value="Shoes">Shoes</option>
-            <option value="Clothing">Clothing</option>
-            <option value="Accessories">Accessories</option>
-            <option value="Other">Other</option>
-          </select>
-          <textarea type="text" value={products} onChange={handleChange} rows="40" cols="100" />
-        </label>
-        <button type="submit"> Submit </button>
-        <button type="reset" onClick={handleClear}>
-          Clear
-        </button>
+        <textarea type="text" value={products} onChange={handleChange} rows="30" cols="80" />
+        <select onChange={handleTypeChange} value={type}>
+          <option value="Shoes">Shoes</option>
+          <option value="Clothing">Clothing</option>
+          <option value="Accessories">Accessories</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <ButtonToolbar>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+          <Button variant="danger" onClick={handleClear}>
+            Reset
+          </Button>
+          <Button variant="success">
+            <CSVLink data={csvData}>Download CSV</CSVLink>
+          </Button>
+        </ButtonToolbar>
       </form>
-      <CSVLink data={csvData}>Download me</CSVLink>
-    </div>
+    </Container>
   );
 }
 

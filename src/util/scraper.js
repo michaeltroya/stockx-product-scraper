@@ -6,7 +6,7 @@ const scraper = (products, type) => {
     let newHandle = url.split('/')[3];
     return newHandle;
   };
-  console.log(type);
+
   for (let index = 0; index < prodList.products.length; index++) {
     const title = prodList.products[index].item.name;
     const tag = prodList.products[index].item.brand;
