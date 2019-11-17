@@ -1,22 +1,22 @@
-const scraper = products => {
+const scraper = (products, type) => {
   let newProductList = [];
   let prodList = JSON.parse(products);
 
   const trimUrlToHandle = url => {
-    var newHandle = url.split('/')[3];
+    let newHandle = url.split('/')[3];
     return newHandle;
   };
-
+  console.log(type);
   for (let index = 0; index < prodList.products.length; index++) {
     const title = prodList.products[index].item.name;
     const tag = prodList.products[index].item.brand;
-    const handle = trimUrlToHandle(prodList.products[index].item.offers.url);
-    const imageUrl = prodList.products[index].item.image;
+    const handle = prodList.products[index].item.hasOwnProperty('offers') ? trimUrlToHandle(prodList.products[index].item.offers.url) : 'NO HANDLE';
+    const imageUrl = prodList.products[index].item.image === '--' ? 'NO IMAGE' : prodList.products[index].item.image;
     const product = {
       Handle: handle,
       Title: title,
-      Type: 'Shoes',
-      Tags: `${tag}`,
+      Type: type,
+      Tags: tag,
       'Image Src': imageUrl
     };
     newProductList.push(product);
