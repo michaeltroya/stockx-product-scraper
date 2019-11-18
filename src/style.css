@@ -1,0 +1,10 @@
+.text-area {
+  width: 700px;
+  height: 600px;
+  margin-top: 3rem;
+  font-size: 0.6rem !important;
+}
+
+.type-selector {
+  margin: 1rem;
+}

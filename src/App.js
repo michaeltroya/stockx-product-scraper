@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
-
+import './style.css';
+//JSON to CSV import
 import { CSVLink } from 'react-csv';
 //Bootstrap imports
 import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+import Alert from 'react-bootstrap/Alert';
+
 import scraper from './util/scraper';
 
 function App() {
   const [products, setProducts] = useState('');
   const [type, setType] = useState('Shoes');
   const [csvData, setCsvData] = useState([]);
+  const [errors, setErrors] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleChange = e => {
     setProducts(e.target.value);
@@ -23,6 +29,9 @@ function App() {
   const handleClear = () => {
     setProducts('');
     setType('Shoes');
+    setCsvData([]);
+    setErrors(false);
+    setSuccess(false);
   };
 
   const getObjString = input => {
@@ -34,37 +43,62 @@ function App() {
 
   const handleSubmit = e => {
     if (products === '') {
-      alert('Form can not be empty');
+      setErrors(true);
+      setSuccess(false);
     } else {
+      setErrors(false);
+      setSuccess(true);
       setCsvData(scraper(getObjString(products), type));
+      console.log(csvData);
     }
-
+    console.log(errors);
     e.preventDefault();
   };
 
   return (
     <Container>
-      <form onSubmit={handleSubmit}>
-        <textarea type="text" value={products} onChange={handleChange} rows="30" cols="80" />
-        <select onChange={handleTypeChange} value={type}>
-          <option value="Shoes">Shoes</option>
-          <option value="Clothing">Clothing</option>
-          <option value="Accessories">Accessories</option>
-          <option value="Other">Other</option>
-        </select>
-
-        <ButtonToolbar>
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-          <Button variant="danger" onClick={handleClear}>
-            Reset
-          </Button>
-          <Button variant="success">
-            <CSVLink data={csvData}>Download CSV</CSVLink>
-          </Button>
-        </ButtonToolbar>
-      </form>
+      <Row>
+        <Col className="d-flex justify-content-sm-center">
+          <form onSubmit={handleSubmit}>
+            <Row>
+              <Col>
+                <textarea className="text-area" type="text" value={products} onChange={handleChange} />
+                {errors ? <Alert variant="danger">The above field can not be empty</Alert> : null}
+                {success ? <Alert variant="success">CSV ready to download</Alert> : null}
+              </Col>
+            </Row>
+            <Row>
+              <Col className="d-flex justify-content-sm-center">
+                <select className="type-selector" onChange={handleTypeChange} value={type}>
+                  <option value="Shoes">Shoes</option>
+                  <option value="Clothing">Clothing</option>
+                  <option value="Accessories">Accessories</option>
+                  <option value="Other">Other</option>
+                </select>
+              </Col>
+            </Row>
+            <Row>
+              <Col className="d-flex justify-content-sm-center">
+                <Button variant="primary" type="submit">
+                  Submit
+                </Button>
+                <Button variant="danger" onClick={handleClear}>
+                  Reset
+                </Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col className="d-flex justify-content-sm-center">
+                {success ? (
+                  <Button variant="success">
+                    <CSVLink data={csvData}>Download CSV</CSVLink>
+                  </Button>
+                ) : null}
+              </Col>
+            </Row>
+          </form>
+        </Col>
+      </Row>
     </Container>
   );
 }
