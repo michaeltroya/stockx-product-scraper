@@ -15,7 +15,7 @@ function App() {
   const [products, setProducts] = useState('');
   const [type, setType] = useState('Shoes');
   const [csvData, setCsvData] = useState([]);
-  const [errors, setErrors] = useState(false);
+  const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
 
   const handleChange = e => {
@@ -30,7 +30,7 @@ function App() {
     setProducts('');
     setType('Shoes');
     setCsvData([]);
-    setErrors(false);
+    setErrors({});
     setSuccess(false);
   };
 
@@ -42,16 +42,15 @@ function App() {
   };
 
   const handleSubmit = e => {
-    if (products === '') {
-      setErrors(true);
+    if (products === '' || scraper(getObjString(products), type).formatError) {
+      setErrors({ emptyError: 'Form cant be empty', formatError: scraper(getObjString(products), type).formatError });
       setSuccess(false);
     } else {
       setErrors(false);
       setSuccess(true);
       setCsvData(scraper(getObjString(products), type));
-      console.log(csvData);
     }
-    console.log(errors);
+
     e.preventDefault();
   };
 
@@ -63,7 +62,8 @@ function App() {
             <Row>
               <Col>
                 <textarea className="text-area" type="text" value={products} onChange={handleChange} />
-                {errors ? <Alert variant="danger">The above field can not be empty</Alert> : null}
+                {errors.emptyError ? <Alert variant="danger">{errors.emptyError}</Alert> : null}
+                {errors.formatError ? <Alert variant="danger">{errors.formatError}</Alert> : null}
                 {success ? <Alert variant="success">CSV ready to download</Alert> : null}
               </Col>
             </Row>
@@ -90,7 +90,7 @@ function App() {
             <Row>
               <Col className="d-flex justify-content-sm-center">
                 {success ? (
-                  <Button variant="success">
+                  <Button variant="success" onClick={handleClear}>
                     <CSVLink data={csvData}>Download CSV</CSVLink>
                   </Button>
                 ) : null}
