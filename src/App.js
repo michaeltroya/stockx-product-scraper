@@ -35,20 +35,22 @@ function App() {
   };
 
   const getObjString = input => {
-    let string = `{
-      "products":[${input}]
-  }`;
+    let string = `{"products":[${input}]}`;
     return string;
   };
 
   const handleSubmit = e => {
-    if (products === '' || scraper(getObjString(products), type).formatError) {
-      setErrors({ emptyError: 'Form cant be empty', formatError: scraper(getObjString(products), type).formatError });
+    let data = scraper(getObjString(products), type);
+
+    if (data.emptyError || data.formatError) {
       setSuccess(false);
+      setErrors({ ...data });
+      console.log(errors);
     } else {
-      setErrors(false);
+      setCsvData(data);
+      setErrors({});
       setSuccess(true);
-      setCsvData(scraper(getObjString(products), type));
+      console.log(data);
     }
 
     e.preventDefault();

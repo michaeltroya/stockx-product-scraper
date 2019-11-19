@@ -20,7 +20,17 @@ const scraper = (products, type) => {
     return false;
   };
 
-  if (tryParseJSON(products)) {
+  if (products === `{"products":[]}`) {
+    errors.emptyError = 'Form can not be empty';
+  }
+
+  if (!tryParseJSON(products)) {
+    errors.formatError = 'Invalid format';
+  }
+
+  if (errors.emptyError || errors.formatError) {
+    return errors;
+  } else {
     prodList = JSON.parse(products);
     for (let index = 0; index < prodList.products.length; index++) {
       const title = prodList.products[index].item.name;
@@ -36,11 +46,8 @@ const scraper = (products, type) => {
       };
       newProductList.push(product);
     }
-    console.log(JSON.stringify(newProductList));
+
     return newProductList;
-  } else {
-    errors.formatError = 'Invalid format';
-    return errors;
   }
 };
 
