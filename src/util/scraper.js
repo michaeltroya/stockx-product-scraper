@@ -10,7 +10,7 @@ const scraper = (products, type) => {
 
   const tryParseJSON = jsonString => {
     try {
-      var o = JSON.parse(jsonString);
+      let o = JSON.parse(jsonString);
 
       if (o && typeof o === 'object') {
         return true;
@@ -20,11 +20,27 @@ const scraper = (products, type) => {
     return false;
   };
 
-  if (products.replace(/\s/g, '') === `{"products":[]}`) {
+  const hasOnlyNumbers = string => {
+    let matches = string.match(/\[(.*?)\]/);
+    let inSideBrackets;
+
+    if (matches === null) {
+      return false;
+    } else {
+      inSideBrackets = matches[1];
+      if (inSideBrackets.match(/^\d+$/)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  };
+
+  if (products.replace(/\s/g, '') === '{"products":[]}') {
     errors.emptyError = 'Form can not be empty';
   }
 
-  if (!tryParseJSON(products)) {
+  if (!tryParseJSON(products) || hasOnlyNumbers(products)) {
     errors.formatError = 'Invalid format';
   }
 
