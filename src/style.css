@@ -1,10 +1,32 @@
 .text-area {
-  width: 700px;
+  width: 550px;
   height: 600px;
   margin-top: 3rem;
-  font-size: 0.6rem !important;
+  font-size: 0.8rem !important;
+  border: 1px solid #ced4da;
+}
+
+.text-area:focus {
+  outline-style: none;
+}
+
+.text-area::placeholder {
+  font-size: 0.8rem;
 }
 
 .type-selector {
   margin: 1rem;
+}
+
+a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.my-btn {
+  margin: 0 1rem;
+}
+
+.download-btn {
+  margin-top: 1rem;
 }

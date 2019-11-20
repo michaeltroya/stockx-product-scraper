@@ -20,7 +20,7 @@ const scraper = (products, type) => {
     return false;
   };
 
-  if (products === `{"products":[]}`) {
+  if (products.replace(/\s/g, '') === `{"products":[]}`) {
     errors.emptyError = 'Form can not be empty';
   }
 

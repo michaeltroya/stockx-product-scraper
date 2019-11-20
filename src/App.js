@@ -45,7 +45,6 @@ function App() {
     if (data.emptyError || data.formatError) {
       setSuccess(false);
       setErrors({ ...data });
-      console.log(errors);
     } else {
       setCsvData(data);
       setErrors({});
@@ -63,15 +62,16 @@ function App() {
           <form onSubmit={handleSubmit}>
             <Row>
               <Col>
-                <textarea className="text-area" type="text" value={products} onChange={handleChange} />
+                <textarea className="text-area" type="text" value={products} onChange={handleChange} placeholder="Enter StockX Data" />
                 {errors.emptyError ? <Alert variant="danger">{errors.emptyError}</Alert> : null}
                 {errors.formatError ? <Alert variant="danger">{errors.formatError}</Alert> : null}
                 {success ? <Alert variant="success">CSV ready to download</Alert> : null}
               </Col>
             </Row>
             <Row>
-              <Col className="d-flex justify-content-sm-center">
-                <select className="type-selector" onChange={handleTypeChange} value={type}>
+              <Col className="d-flex justify-content-sm-center align-items-center">
+                <span>Type:</span>
+                <select className="type-selector form-control" onChange={handleTypeChange} value={type}>
                   <option value="Shoes">Shoes</option>
                   <option value="Clothing">Clothing</option>
                   <option value="Accessories">Accessories</option>
@@ -81,10 +81,10 @@ function App() {
             </Row>
             <Row>
               <Col className="d-flex justify-content-sm-center">
-                <Button variant="primary" type="submit">
+                <Button className="my-btn" variant="outline-primary" type="submit">
                   Submit
                 </Button>
-                <Button variant="danger" onClick={handleClear}>
+                <Button className="my-btn" variant="outline-danger" onClick={handleClear}>
                   Reset
                 </Button>
               </Col>
@@ -92,7 +92,7 @@ function App() {
             <Row>
               <Col className="d-flex justify-content-sm-center">
                 {success ? (
-                  <Button variant="success" onClick={handleClear}>
+                  <Button className="download-btn" variant="outline-success" size="lg" onClick={handleClear}>
                     <CSVLink data={csvData}>Download CSV</CSVLink>
                   </Button>
                 ) : null}
