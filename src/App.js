@@ -49,7 +49,6 @@ function App() {
       setCsvData(data);
       setErrors({});
       setSuccess(true);
-      console.log(data);
     }
 
     e.preventDefault();
@@ -62,7 +61,13 @@ function App() {
           <form onSubmit={handleSubmit}>
             <Row>
               <Col>
-                <textarea className="text-area" type="text" value={products} onChange={handleChange} placeholder="Enter StockX Data" />
+                <textarea
+                  className="text-area"
+                  type="text"
+                  value={products}
+                  onChange={handleChange}
+                  placeholder="Enter StockX Data"
+                />
                 {errors.emptyError ? <Alert variant="danger">{errors.emptyError}</Alert> : null}
                 {errors.formatError ? <Alert variant="danger">{errors.formatError}</Alert> : null}
                 {success ? <Alert variant="success">CSV ready to download</Alert> : null}
